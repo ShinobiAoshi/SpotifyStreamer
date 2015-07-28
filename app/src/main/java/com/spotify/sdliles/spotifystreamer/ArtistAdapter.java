@@ -29,7 +29,7 @@ public class ArtistAdapter extends ArrayAdapter<Artist>
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ArtistHolder holder = null;
+        ArtistHolder holder;
 
         if(convertView == null)
         {
