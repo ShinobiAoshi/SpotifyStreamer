@@ -1,5 +1,6 @@
 package com.spotify.sdliles.spotifystreamer;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
@@ -11,12 +12,18 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Artist;
+import kaaes.spotify.webapi.android.models.ArtistsPager;
+
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ArtistSearchFragment extends Fragment
 {
+    ArtistAdapter artistAdapter;
 
     public ArtistSearchFragment ()
     {
@@ -27,7 +34,8 @@ public class ArtistSearchFragment extends Fragment
                               Bundle savedInstanceState)
     {
         final View rootView = inflater.inflate(R.layout.fragment_artist_search, container, false);
-        EditText artistSearchEditText = (EditText) rootView.findViewById(
+        artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, new Artist[0]);
+        final EditText artistSearchEditText = (EditText) rootView.findViewById(
                 R.id.artist_search_edit_text);
         artistSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
@@ -36,7 +44,8 @@ public class ArtistSearchFragment extends Fragment
             {
                 if(actionId == EditorInfo.IME_ACTION_SEARCH)
                 {
-                    ArtistAdapter artistAdapter = mockData();
+                    //artistAdapter = mockData();
+                    new FetchArtistsTask().execute(artistSearchEditText.getText().toString());
                     ListView artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
                     artistList.setAdapter(artistAdapter);
                     return true;
@@ -47,7 +56,7 @@ public class ArtistSearchFragment extends Fragment
         return rootView;
     }
 
-    private ArtistAdapter mockData()
+    /*private ArtistAdapter mockData()
     {
         Artist[] artists = new Artist[6];
         artists[0] = new Artist("Linkin Park", "http://i.imgur.com/UbQK3Ww.jpg");
@@ -58,5 +67,25 @@ public class ArtistSearchFragment extends Fragment
         artists[5] = new Artist("Linkin Park 6", "http://i.imgur.com/UbQK3Ww.jpg");
 
         return new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, artists);
+    }*/
+
+    public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
+        @Override
+        protected ArtistsPager doInBackground (String... params)
+        {
+            SpotifyApi api = new SpotifyApi();
+            SpotifyService spotify = api.getService();
+            return spotify.searchArtists(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute (ArtistsPager artistsPager)
+        {
+            if(artistsPager != null)
+            {
+                Artist[] artists = artistsPager.artists.items.toArray(new Artist[artistsPager.artists.items.size()]);
+                artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, artists);
+            }
+        }
     }
 }
