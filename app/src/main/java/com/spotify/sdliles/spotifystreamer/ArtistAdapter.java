@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import kaaes.spotify.webapi.android.models.Artist;
 /**
  * Created by Stephen on 7/27/2015.
  */
@@ -48,8 +50,8 @@ public class ArtistAdapter extends ArrayAdapter<Artist>
         }
 
         Artist artist = artistData[position];
-        holder.artistName.setText(artist.getName());
-        Picasso.with(this.context).load(artist.getImageUrl()).into(holder.artistImage);
+        holder.artistName.setText(artist.name);
+        Picasso.with(this.context).load(artist.images.get(0).url).into(holder.artistImage);
 
 
         return convertView;
