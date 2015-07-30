@@ -1,5 +1,6 @@
 package com.spotify.sdliles.spotifystreamer;
 
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 public class ArtistSearchFragment extends Fragment
 {
     ArtistAdapter artistAdapter;
+    ProgressDialog progressDialog;
 
     public ArtistSearchFragment ()
     {
@@ -79,12 +81,23 @@ public class ArtistSearchFragment extends Fragment
         }
 
         @Override
+        protected void onPreExecute ()
+        {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Please Wait...");
+            progressDialog.setMessage("Searching...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
         protected void onPostExecute (ArtistsPager artistsPager)
         {
             if(artistsPager != null)
             {
                 Artist[] artists = artistsPager.artists.items.toArray(new Artist[artistsPager.artists.items.size()]);
                 artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, artists);
+                progressDialog.dismiss();
             }
         }
     }
