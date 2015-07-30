@@ -9,7 +9,8 @@
         android:layout_height="60dp"
         android:layout_width="60dp"
         android:scaleType="fitXY"
-        android:layout_marginLeft="10dp" />
+        android:layout_marginLeft="10dp"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/artist_name"
