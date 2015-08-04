@@ -9,14 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
 import kaaes.spotify.webapi.android.models.Artist;
+
 /**
  * Created by Stephen on 7/27/2015.
  */
-public class ArtistAdapter extends ArrayAdapter<Artist>
-{
+public class ArtistAdapter extends ArrayAdapter<Artist> {
 
     Context context;
     int layoutResId;
@@ -33,32 +31,28 @@ public class ArtistAdapter extends ArrayAdapter<Artist>
     public View getView(int position, View convertView, ViewGroup parent) {
         ArtistHolder holder;
 
-        if(convertView == null)
-        {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+        if (convertView == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(layoutResId, parent, false);
 
             holder = new ArtistHolder();
-            holder.artistImage = (ImageView)convertView.findViewById(R.id.artist_image);
-            holder.artistName = (TextView)convertView.findViewById(R.id.artist_name);
+            holder.artistImage = (ImageView) convertView.findViewById(R.id.artist_image);
+            holder.artistName = (TextView) convertView.findViewById(R.id.artist_name);
 
             convertView.setTag(holder);
-        }
-        else
-        {
-            holder = (ArtistHolder)convertView.getTag();
+        } else {
+            holder = (ArtistHolder) convertView.getTag();
         }
 
         Artist artist = artistData[position];
         holder.artistName.setText(artist.name);
-        Picasso.with(this.context).load(artist.images.get(0).url).into(holder.artistImage);
+        //Picasso.with(this.context).load(artist.images.get(0).url).into(holder.artistImage);
 
 
         return convertView;
     }
 
-    static class ArtistHolder
-    {
+    static class ArtistHolder {
         ImageView artistImage;
         TextView artistName;
     }

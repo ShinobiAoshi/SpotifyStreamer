@@ -22,30 +22,24 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ArtistSearchFragment extends Fragment
-{
+public class ArtistSearchFragment extends Fragment {
     ArtistAdapter artistAdapter;
     ProgressDialog progressDialog;
 
-    public ArtistSearchFragment ()
-    {
+    public ArtistSearchFragment() {
     }
 
     @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_artist_search, container, false);
         artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, new Artist[0]);
         final EditText artistSearchEditText = (EditText) rootView.findViewById(
                 R.id.artist_search_edit_text);
-        artistSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener()
-        {
+        artistSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction (TextView v, int actionId, KeyEvent event)
-            {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH)
-                {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     //artistAdapter = mockData();
                     new FetchArtistsTask().execute(artistSearchEditText.getText().toString());
                     ListView artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
@@ -73,16 +67,14 @@ public class ArtistSearchFragment extends Fragment
 
     public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
         @Override
-        protected ArtistsPager doInBackground (String... params)
-        {
+        protected ArtistsPager doInBackground(String... params) {
             SpotifyApi api = new SpotifyApi();
             SpotifyService spotify = api.getService();
             return spotify.searchArtists(params[0]);
         }
 
         @Override
-        protected void onPreExecute ()
-        {
+        protected void onPreExecute() {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setTitle("Please Wait...");
             progressDialog.setMessage("Searching...");
@@ -91,10 +83,8 @@ public class ArtistSearchFragment extends Fragment
         }
 
         @Override
-        protected void onPostExecute (ArtistsPager artistsPager)
-        {
-            if(artistsPager != null)
-            {
+        protected void onPostExecute(ArtistsPager artistsPager) {
+            if (artistsPager != null) {
                 Artist[] artists = artistsPager.artists.items.toArray(new Artist[artistsPager.artists.items.size()]);
                 artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, artists);
                 progressDialog.dismiss();
