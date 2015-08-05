@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
@@ -25,6 +28,7 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 public class ArtistSearchFragment extends Fragment {
     ArtistAdapter artistAdapter;
     ProgressDialog progressDialog;
+    List<ParcelableArtist> parcelableArtists = new ArrayList<ParcelableArtist>();
 
     public ArtistSearchFragment() {
     }
@@ -33,17 +37,16 @@ public class ArtistSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_artist_search, container, false);
-        artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, new Artist[0]);
+        artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, parcelableArtists);
+        ListView artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
+        artistList.setAdapter(artistAdapter);
         final EditText artistSearchEditText = (EditText) rootView.findViewById(
                 R.id.artist_search_edit_text);
         artistSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //artistAdapter = mockData();
                     new FetchArtistsTask().execute(artistSearchEditText.getText().toString());
-                    ListView artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
-                    artistList.setAdapter(artistAdapter);
                     return true;
                 }
                 return false;
@@ -51,19 +54,6 @@ public class ArtistSearchFragment extends Fragment {
         });
         return rootView;
     }
-
-    /*private ArtistAdapter mockData()
-    {
-        Artist[] artists = new Artist[6];
-        artists[0] = new Artist("Linkin Park", "http://i.imgur.com/UbQK3Ww.jpg");
-        artists[1] = new Artist("Linkin Park 2", "http://i.imgur.com/UbQK3Ww.jpg");
-        artists[2] = new Artist("Linkin Park 3", "http://i.imgur.com/UbQK3Ww.jpg");
-        artists[3] = new Artist("Linkin Park 4", "http://i.imgur.com/UbQK3Ww.jpg");
-        artists[4] = new Artist("Linkin Park 5", "http://i.imgur.com/UbQK3Ww.jpg");
-        artists[5] = new Artist("Linkin Park 6", "http://i.imgur.com/UbQK3Ww.jpg");
-
-        return new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, artists);
-    }*/
 
     public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
         @Override
@@ -85,8 +75,17 @@ public class ArtistSearchFragment extends Fragment {
         @Override
         protected void onPostExecute(ArtistsPager artistsPager) {
             if (artistsPager != null) {
-                Artist[] artists = artistsPager.artists.items.toArray(new Artist[artistsPager.artists.items.size()]);
-                artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, artists);
+
+                parcelableArtists.clear();
+
+                for (Artist artist : artistsPager.artists.items) {
+                    ParcelableArtist artistEntity = new ParcelableArtist(artist);
+                    parcelableArtists.add(artistEntity);
+                }
+
+                artistAdapter.clear();
+                artistAdapter.addAll(parcelableArtists);
+
                 progressDialog.dismiss();
             }
         }
