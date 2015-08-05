@@ -16,7 +16,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Artist;
 import kaaes.spotify.webapi.android.models.ArtistsPager;
@@ -29,6 +28,7 @@ public class ArtistSearchFragment extends Fragment {
     ArtistAdapter artistAdapter;
     ProgressDialog progressDialog;
     List<ParcelableArtist> parcelableArtists = new ArrayList<ParcelableArtist>();
+    SpotifyService spotify;
 
     public ArtistSearchFragment() {
     }
@@ -58,8 +58,7 @@ public class ArtistSearchFragment extends Fragment {
     public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
         @Override
         protected ArtistsPager doInBackground(String... params) {
-            SpotifyApi api = new SpotifyApi();
-            SpotifyService spotify = api.getService();
+            spotify = Spotify.getInstance();
             return spotify.searchArtists(params[0]);
         }
 
@@ -76,11 +75,10 @@ public class ArtistSearchFragment extends Fragment {
         protected void onPostExecute(ArtistsPager artistsPager) {
             if (artistsPager != null) {
 
-                parcelableArtists.clear();
-
-                for (Artist artist : artistsPager.artists.items) {
-                    ParcelableArtist artistEntity = new ParcelableArtist(artist);
-                    parcelableArtists.add(artistEntity);
+                parcelableArtists = new ArrayList<>();
+                for(Artist artist : artistsPager.artists.items) {
+                    ParcelableArtist parcelableArtist = new ParcelableArtist(artist);
+                    parcelableArtists.add(parcelableArtist);
                 }
 
                 artistAdapter.clear();
