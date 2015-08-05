@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer;
+package com.spotify.sdliles.spotifystreamer.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
+import com.spotify.sdliles.spotifystreamer.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

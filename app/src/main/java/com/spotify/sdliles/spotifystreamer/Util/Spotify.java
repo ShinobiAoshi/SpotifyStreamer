@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer;
+package com.spotify.sdliles.spotifystreamer.Util;
 
 /**
  * Created by Stephen on 8/4/2015.

@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer;
+package com.spotify.sdliles.spotifystreamer.UI;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -12,6 +12,11 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.spotify.sdliles.spotifystreamer.Adapters.ArtistAdapter;
+import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
+import com.spotify.sdliles.spotifystreamer.R;
+import com.spotify.sdliles.spotifystreamer.Util.Spotify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +81,7 @@ public class ArtistSearchFragment extends Fragment {
             if (artistsPager != null) {
 
                 parcelableArtists = new ArrayList<>();
-                for(Artist artist : artistsPager.artists.items) {
+                for (Artist artist : artistsPager.artists.items) {
                     ParcelableArtist parcelableArtist = new ParcelableArtist(artist);
                     parcelableArtists.add(parcelableArtist);
                 }
