@@ -4,8 +4,13 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -30,6 +35,7 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
  * A placeholder fragment containing a simple view.
  */
 public class ArtistSearchFragment extends Fragment {
+    ActionBar toolbar;
     ArtistAdapter artistAdapter;
     ProgressDialog progressDialog;
     List<ParcelableArtist> parcelableArtists = new ArrayList<ParcelableArtist>();
@@ -57,7 +63,35 @@ public class ArtistSearchFragment extends Fragment {
                 return false;
             }
         });
+        setHasOptionsMenu(true);
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_artist_search_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
     public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
