@@ -10,7 +10,7 @@
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/artist_search_list_view"
+            android:id="@+id/top_tracks_list_view"
             android:layout_gravity="center_horizontal"/>
 
 </FrameLayout>
