@@ -4,19 +4,17 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.spotify.sdliles.spotifystreamer.Adapters.ArtistAdapter;
 import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
@@ -40,6 +38,7 @@ public class ArtistSearchFragment extends Fragment {
     ProgressDialog progressDialog;
     List<ParcelableArtist> parcelableArtists = new ArrayList<ParcelableArtist>();
     SpotifyService spotify;
+    ListView artistList;
 
     public ArtistSearchFragment() {
     }
@@ -49,20 +48,12 @@ public class ArtistSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_artist_search, container, false);
         artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, parcelableArtists);
-        ListView artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
+        artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
+        ViewGroup parentGroup = (ViewGroup) artistList.getParent();
+        View emptyView = getActivity().getLayoutInflater().inflate(R.layout.empty_artist_search, parentGroup, false);
+        parentGroup.addView(emptyView);
+        artistList.setEmptyView(emptyView);
         artistList.setAdapter(artistAdapter);
-        final EditText artistSearchEditText = (EditText) rootView.findViewById(
-                R.id.artist_search_edit_text);
-        artistSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    new FetchArtistsTask().execute(artistSearchEditText.getText().toString());
-                    return true;
-                }
-                return false;
-            }
-        });
         setHasOptionsMenu(true);
         return rootView;
     }
@@ -70,6 +61,23 @@ public class ArtistSearchFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_artist_search_fragment, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                new FetchArtistsTask().execute(query);
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         super.onCreateOptionsMenu(menu, inflater);
     }
 
