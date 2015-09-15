@@ -125,8 +125,6 @@ public class ArtistSearchFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Please Wait...");
-            progressDialog.setMessage("Searching...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
