@@ -103,7 +103,7 @@ public class ArtistSearchFragment extends Fragment {
         artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
         artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, parcelableArtists);
         ViewGroup parentGroup = (ViewGroup) artistList.getParent();
-        View emptyView = getActivity().getLayoutInflater().inflate(R.layout.empty_artist_search, parentGroup, false);
+        View emptyView = getActivity().getLayoutInflater().inflate(R.layout.no_search_results, parentGroup, false);
         parentGroup.addView(emptyView);
         artistList.setEmptyView(emptyView);
         artistList.setAdapter(artistAdapter);
