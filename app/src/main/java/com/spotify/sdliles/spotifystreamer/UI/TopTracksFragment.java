@@ -73,10 +73,6 @@ public class TopTracksFragment extends Fragment {
         toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
         trackList = (ListView) rootView.findViewById(R.id.top_tracks_list_view);
         mTrackAdapter = new TrackAdapter(getActivity(), R.layout.list_top_tracks_item, mParcelableTracks);
-        ViewGroup parentGroup = (ViewGroup) trackList.getParent();
-        View emptyView = getActivity().getLayoutInflater().inflate(R.layout.no_search_results, parentGroup, false);
-        parentGroup.addView(emptyView);
-        trackList.setEmptyView(emptyView);
         trackList.setAdapter(mTrackAdapter);
     }
 
