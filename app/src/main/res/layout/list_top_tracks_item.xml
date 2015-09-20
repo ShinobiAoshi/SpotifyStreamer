@@ -19,18 +19,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp">
-        <TextView
-                android:id="@+id/album_name"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:text="Album"
-                android:textSize="14sp"/>
 
         <TextView
                 android:id="@+id/track_name"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="Track"
+                android:textSize="14sp"/>
+
+        <TextView
+                android:id="@+id/album_name"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Album"
                 android:textSize="14sp"/>
 
     </LinearLayout>
