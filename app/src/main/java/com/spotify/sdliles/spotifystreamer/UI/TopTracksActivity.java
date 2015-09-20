@@ -20,8 +20,8 @@ public class TopTracksActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
 
             Bundle arguments = new Bundle();
-            artist = getIntent().getParcelableExtra(TopTracksFragment.TOP_TRACKS);
-            arguments.putParcelable(TopTracksFragment.TOP_TRACKS, artist);
+            artist = getIntent().getParcelableExtra(ArtistSearchFragment.ARTIST_KEY);
+            arguments.putParcelable(ArtistSearchFragment.ARTIST_KEY, artist);
 
             TopTracksFragment fragment = new TopTracksFragment();
             fragment.setArguments(arguments);

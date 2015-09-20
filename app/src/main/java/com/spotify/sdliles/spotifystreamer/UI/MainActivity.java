@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
         setSupportActionBar(toolbar);
 
         mIsTwoPaneLayout = (findViewById(R.id.top_tracks_container) != null);
-        if (mIsTwoPaneLayout && savedInstanceState != null) {
+        if (mIsTwoPaneLayout && savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.top_tracks_container, new TopTracksFragment())
                     .commit();
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
     public void onItemSelected(ParcelableArtist artist) {
         if(mIsTwoPaneLayout) {
             Bundle args = new Bundle();
-            args.putParcelable(TopTracksFragment.TOP_TRACKS, artist);
+            args.putParcelable(ArtistSearchFragment.ARTIST_KEY, artist);
 
             TopTracksFragment fragment = new TopTracksFragment();
             fragment.setArguments(args);
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
                     .commit();
         } else {
             Intent intent = new Intent(this, TopTracksActivity.class);
-            intent.putExtra(TopTracksFragment.TOP_TRACKS, artist);
+            intent.putExtra(ArtistSearchFragment.ARTIST_KEY, artist);
             startActivity(intent);
         }
     }

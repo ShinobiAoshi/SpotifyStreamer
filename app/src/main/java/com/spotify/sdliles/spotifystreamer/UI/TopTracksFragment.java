@@ -33,7 +33,7 @@ import kaaes.spotify.webapi.android.models.Tracks;
  */
 public class TopTracksFragment extends Fragment {
 
-    static final String TOP_TRACKS = "TopTracks";
+
 
     private View rootView;
     private ParcelableArtist mArtist;
@@ -44,6 +44,10 @@ public class TopTracksFragment extends Fragment {
     private ProgressDialog progressDialog;
     private ActionBar toolbar;
 
+    private int mPosition = ListView.INVALID_POSITION;
+    private static final String SELECTED_KEY = "selected_position";
+    public static final String TRACKS_KEY = "tracks";
+
     public TopTracksFragment() {
     }
 
@@ -52,18 +56,38 @@ public class TopTracksFragment extends Fragment {
         Bundle arguments = getArguments();
 
         if (arguments != null) {
-            mArtist = arguments.getParcelable(TOP_TRACKS);
+            mArtist = arguments.getParcelable(ArtistSearchFragment.ARTIST_KEY);
         }
 
         rootView = inflater.inflate(R.layout.fragment_top_tracks, container, false);
-        if(savedInstanceState != null && savedInstanceState.containsKey("tracks")) {
-            mParcelableTracks = savedInstanceState.getParcelableArrayList("tracks");
+
+        if(savedInstanceState != null) {
+
+            if (savedInstanceState.containsKey(TRACKS_KEY)) {
+                mParcelableTracks = savedInstanceState.getParcelableArrayList(TRACKS_KEY);
+            } else {
+                mParcelableTracks = new ArrayList<>();
+            }
+
+            if (savedInstanceState.containsKey(SELECTED_KEY)) {
+                mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            }
         } else {
             mParcelableTracks = new ArrayList<>();
         }
-        if (mArtist != null) {
+
+        trackList = (ListView) rootView.findViewById(R.id.top_tracks_list_view);
+        mTrackAdapter = new TrackAdapter(getActivity(), R.layout.list_top_tracks_item, mParcelableTracks);
+        trackList.setAdapter(mTrackAdapter);
+
+        if (mPosition != ListView.INVALID_POSITION) {
+            trackList.setSelection(mPosition);
+        }
+
+        if (mArtist != null && savedInstanceState == null) {
             new FetchTracksTask().execute();
         }
+
         return rootView;
     }
 
@@ -71,15 +95,17 @@ public class TopTracksFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        trackList = (ListView) rootView.findViewById(R.id.top_tracks_list_view);
-        mTrackAdapter = new TrackAdapter(getActivity(), R.layout.list_top_tracks_item, mParcelableTracks);
-        trackList.setAdapter(mTrackAdapter);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        if(mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        if(mParcelableTracks != null && !mParcelableTracks.isEmpty()) {
+            outState.putParcelableArrayList(TRACKS_KEY, (ArrayList<? extends Parcelable>) mParcelableTracks);
+        }
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("tracks", (ArrayList<? extends Parcelable>) mParcelableTracks);
     }
 
     @Override
