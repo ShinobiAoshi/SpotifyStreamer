@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.spotify.sdliles.spotifystreamer.Adapters.ArtistAdapter;
@@ -41,6 +42,10 @@ public class ArtistSearchFragment extends Fragment {
     List<ParcelableArtist> parcelableArtists;
     SpotifyService spotify;
     ListView artistList;
+
+    public interface Callback {
+        void onItemSelected(ParcelableArtist artist);
+    }
 
     public ArtistSearchFragment() {
     }
@@ -107,6 +112,17 @@ public class ArtistSearchFragment extends Fragment {
         parentGroup.addView(emptyView);
         artistList.setEmptyView(emptyView);
         artistList.setAdapter(artistAdapter);
+
+        artistList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParcelableArtist artist = (ParcelableArtist) artistList.getItemAtPosition(position);
+                if (artist != null) {
+                    ((Callback) getActivity())
+                            .onItemSelected(artist);
+                }
+            }
+        });
     }
 
     @Override
@@ -142,7 +158,9 @@ public class ArtistSearchFragment extends Fragment {
                 artistAdapter.clear();
                 artistAdapter.addAll(parcelableArtists);
 
-                progressDialog.dismiss();
+                if(progressDialog != null) {
+                    progressDialog.dismiss();
+                }
             }
         }
     }
