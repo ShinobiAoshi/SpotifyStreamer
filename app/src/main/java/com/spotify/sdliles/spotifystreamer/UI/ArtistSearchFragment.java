@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.spotify.sdliles.spotifystreamer.Adapters.ArtistAdapter;
@@ -34,6 +35,7 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
  * A placeholder fragment containing a simple view.
  */
 public class ArtistSearchFragment extends Fragment {
+
     View rootView;
     ActionBar toolbar;
     ArtistAdapter artistAdapter;
@@ -42,6 +44,16 @@ public class ArtistSearchFragment extends Fragment {
     SpotifyService spotify;
     ListView artistList;
 
+    private int mPosition = ListView.INVALID_POSITION;
+    private static final String SELECTED_KEY = "selected_position";
+    public static final String ARTIST_KEY = "artist";
+    public static final String ARTIST_LIST_KEY = "artists";
+
+
+    public interface Callback {
+        void onItemSelected(ParcelableArtist artist);
+    }
+
     public ArtistSearchFragment() {
     }
 
@@ -49,11 +61,44 @@ public class ArtistSearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_artist_search, container, false);
-        if(savedInstanceState != null && savedInstanceState.containsKey("artists")) {
-            parcelableArtists = savedInstanceState.getParcelableArrayList("artists");
+        if(savedInstanceState != null) {
+            if(savedInstanceState.containsKey(ARTIST_LIST_KEY)) {
+                parcelableArtists = savedInstanceState.getParcelableArrayList(ARTIST_LIST_KEY);
+            } else {
+                parcelableArtists = new ArrayList<>();
+            }
+
+            if(savedInstanceState.containsKey(SELECTED_KEY)) {
+                mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            }
         } else {
             parcelableArtists = new ArrayList<>();
         }
+
+        artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
+        artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, parcelableArtists);
+        ViewGroup parentGroup = (ViewGroup) artistList.getParent();
+        View emptyView = getActivity().getLayoutInflater().inflate(R.layout.empty_list, parentGroup, false);
+        parentGroup.addView(emptyView);
+        artistList.setEmptyView(emptyView);
+        artistList.setAdapter(artistAdapter);
+
+        artistList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParcelableArtist artist = (ParcelableArtist) artistList.getItemAtPosition(position);
+                if (artist != null) {
+                    ((Callback) getActivity())
+                            .onItemSelected(artist);
+                }
+                mPosition = position;
+            }
+        });
+
+        if (mPosition != ListView.INVALID_POSITION) {
+            artistList.setSelection(mPosition);
+        }
+
         setHasOptionsMenu(true);
         return rootView;
     }
@@ -100,19 +145,17 @@ public class ArtistSearchFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        artistList = (ListView) rootView.findViewById(R.id.artist_search_list_view);
-        artistAdapter = new ArtistAdapter(getActivity(), R.layout.list_artist_search_result, parcelableArtists);
-        ViewGroup parentGroup = (ViewGroup) artistList.getParent();
-        View emptyView = getActivity().getLayoutInflater().inflate(R.layout.empty_artist_search, parentGroup, false);
-        parentGroup.addView(emptyView);
-        artistList.setEmptyView(emptyView);
-        artistList.setAdapter(artistAdapter);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        if(mPosition != ListView.INVALID_POSITION) {
+            outState.putInt(SELECTED_KEY, mPosition);
+        }
+        if(parcelableArtists != null && !parcelableArtists.isEmpty()) {
+            outState.putParcelableArrayList(ARTIST_LIST_KEY, (ArrayList<? extends Parcelable>) parcelableArtists);
+        }
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("artists", (ArrayList<? extends Parcelable>) parcelableArtists);
     }
 
     public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
@@ -125,8 +168,6 @@ public class ArtistSearchFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Please Wait...");
-            progressDialog.setMessage("Searching...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -144,7 +185,9 @@ public class ArtistSearchFragment extends Fragment {
                 artistAdapter.clear();
                 artistAdapter.addAll(parcelableArtists);
 
-                progressDialog.dismiss();
+                if(progressDialog != null) {
+                    progressDialog.dismiss();
+                }
             }
         }
     }

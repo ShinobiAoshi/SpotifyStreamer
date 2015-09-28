@@ -6,4 +6,8 @@
     <item name="android:colorAccent">@color/accentColor</item>
 </style>
 
+<style name="ListStyle">
+    <item name="android:choiceMode">singleChoice</item>
+</style>
+
 </resources>
