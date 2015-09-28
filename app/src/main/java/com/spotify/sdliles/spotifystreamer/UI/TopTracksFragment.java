@@ -8,11 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.spotify.sdliles.spotifystreamer.Adapters.TrackAdapter;
@@ -45,10 +43,14 @@ public class TopTracksFragment extends Fragment {
     private ActionBar toolbar;
 
     private int mPosition = ListView.INVALID_POSITION;
-    private static final String SELECTED_KEY = "selected_position";
+    public static final String SELECTED_TRACK_INDEX = "track_index";
     public static final String TRACKS_KEY = "tracks";
 
     public TopTracksFragment() {
+    }
+
+    public interface OnTrackSelectedListener {
+        void onTrackSelected(ParcelableArtist artist, List<ParcelableTrack> tracks, int position);
     }
 
     @Override
@@ -69,8 +71,8 @@ public class TopTracksFragment extends Fragment {
                 mParcelableTracks = new ArrayList<>();
             }
 
-            if (savedInstanceState.containsKey(SELECTED_KEY)) {
-                mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            if (savedInstanceState.containsKey(SELECTED_TRACK_INDEX)) {
+                mPosition = savedInstanceState.getInt(SELECTED_TRACK_INDEX);
             }
         } else {
             mParcelableTracks = new ArrayList<>();
@@ -79,6 +81,17 @@ public class TopTracksFragment extends Fragment {
         trackList = (ListView) rootView.findViewById(R.id.top_tracks_list_view);
         mTrackAdapter = new TrackAdapter(getActivity(), R.layout.list_top_tracks_item, mParcelableTracks);
         trackList.setAdapter(mTrackAdapter);
+
+        trackList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParcelableTrack track = (ParcelableTrack) trackList.getItemAtPosition(position);
+                if (track != null) {
+                    ((OnTrackSelectedListener) getActivity()).onTrackSelected(mArtist, (ArrayList) mParcelableTracks, mPosition);
+                }
+                mPosition = position;
+            }
+        });
 
         if (mPosition != ListView.INVALID_POSITION) {
             trackList.setSelection(mPosition);
@@ -100,32 +113,15 @@ public class TopTracksFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if(mPosition != ListView.INVALID_POSITION) {
-            outState.putInt(SELECTED_KEY, mPosition);
+            outState.putInt(SELECTED_TRACK_INDEX, mPosition);
         }
         if(mParcelableTracks != null && !mParcelableTracks.isEmpty()) {
             outState.putParcelableArrayList(TRACKS_KEY, (ArrayList<? extends Parcelable>) mParcelableTracks);
         }
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if(mArtist != null) {
+            outState.putParcelable(ArtistSearchFragment.ARTIST_KEY, mArtist);
         }
-
-        return super.onOptionsItemSelected(item);
+        super.onSaveInstanceState(outState);
     }
 
     public class FetchTracksTask extends AsyncTask<Void, Void, Tracks> {

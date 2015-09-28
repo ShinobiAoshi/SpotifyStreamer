@@ -45,13 +45,13 @@ public class ArtistSearchFragment extends Fragment {
     ListView artistList;
 
     private int mPosition = ListView.INVALID_POSITION;
-    private static final String SELECTED_KEY = "selected_position";
+    private static final String SELECTED_ARTIST_INDEX = "selected_artist";
     public static final String ARTIST_KEY = "artist";
     public static final String ARTIST_LIST_KEY = "artists";
 
 
-    public interface Callback {
-        void onItemSelected(ParcelableArtist artist);
+    public interface OnArtistSelectedListener {
+        void onArtistSelected(ParcelableArtist artist);
     }
 
     public ArtistSearchFragment() {
@@ -68,8 +68,8 @@ public class ArtistSearchFragment extends Fragment {
                 parcelableArtists = new ArrayList<>();
             }
 
-            if(savedInstanceState.containsKey(SELECTED_KEY)) {
-                mPosition = savedInstanceState.getInt(SELECTED_KEY);
+            if(savedInstanceState.containsKey(SELECTED_ARTIST_INDEX)) {
+                mPosition = savedInstanceState.getInt(SELECTED_ARTIST_INDEX);
             }
         } else {
             parcelableArtists = new ArrayList<>();
@@ -88,8 +88,8 @@ public class ArtistSearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParcelableArtist artist = (ParcelableArtist) artistList.getItemAtPosition(position);
                 if (artist != null) {
-                    ((Callback) getActivity())
-                            .onItemSelected(artist);
+                    ((OnArtistSelectedListener) getActivity())
+                            .onArtistSelected(artist);
                 }
                 mPosition = position;
             }
@@ -150,7 +150,7 @@ public class ArtistSearchFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         if(mPosition != ListView.INVALID_POSITION) {
-            outState.putInt(SELECTED_KEY, mPosition);
+            outState.putInt(SELECTED_ARTIST_INDEX, mPosition);
         }
         if(parcelableArtists != null && !parcelableArtists.isEmpty()) {
             outState.putParcelableArrayList(ARTIST_LIST_KEY, (ArrayList<? extends Parcelable>) parcelableArtists);

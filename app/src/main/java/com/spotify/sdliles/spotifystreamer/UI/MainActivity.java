@@ -2,19 +2,27 @@ package com.spotify.sdliles.spotifystreamer.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
+import com.spotify.sdliles.spotifystreamer.Models.ParcelableTrack;
 import com.spotify.sdliles.spotifystreamer.R;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ArtistSearchFragment.Callback{
+
+public class MainActivity extends AppCompatActivity implements ArtistSearchFragment.OnArtistSelectedListener, TopTracksFragment.OnTrackSelectedListener {
 
     private static final String TOPTRACKFRAGMENT_TAG = "TTTAG";
+    public static final String PLAYER_KEY = "player-dialog";
 
     private Toolbar toolbar;
     private boolean mIsTwoPaneLayout;
+    DialogFragment mPlayerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
     }
 
     @Override
-    public void onItemSelected(ParcelableArtist artist) {
+    public void onArtistSelected(ParcelableArtist artist) {
         if(mIsTwoPaneLayout) {
             Bundle args = new Bundle();
             args.putParcelable(ArtistSearchFragment.ARTIST_KEY, artist);
@@ -48,5 +56,33 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
             intent.putExtra(ArtistSearchFragment.ARTIST_KEY, artist);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onTrackSelected(ParcelableArtist artist, List<ParcelableTrack> tracks, int position) {
+        if(mIsTwoPaneLayout) {
+            Bundle arguments = new Bundle();
+            arguments.putParcelable(ArtistSearchFragment.ARTIST_KEY, artist);
+            arguments.putParcelableArrayList(TopTracksFragment.TRACKS_KEY, (ArrayList) tracks);
+            arguments.putInt(TopTracksFragment.SELECTED_TRACK_INDEX, position);
+
+            mPlayerDialog = new PlayerFragment();
+            mPlayerDialog.setArguments(arguments);
+            mPlayerDialog.show(getSupportFragmentManager(), PlayerFragment.class.getSimpleName());
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        if (mPlayerDialog != null && mPlayerDialog.isAdded()) {
+            getSupportFragmentManager().putFragment(bundle, PLAYER_KEY, mPlayerDialog);
+        }
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle bundle) {
+        FragmentManager fm = getSupportFragmentManager();
+        mPlayerDialog = (PlayerFragment) fm.getFragment(bundle, PLAYER_KEY);
     }
 }
