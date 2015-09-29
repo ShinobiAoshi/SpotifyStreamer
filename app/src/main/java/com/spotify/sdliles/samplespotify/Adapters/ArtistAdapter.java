@@ -50,7 +50,11 @@ public class ArtistAdapter extends ArrayAdapter<ParcelableArtist> {
 
         ParcelableArtist artist = artistData.get(position);
         holder.artistName.setText(artist.getName());
-        Picasso.with(this.context).load(artist.getUrl()).into(holder.artistImage);
+        Picasso.with(this.context)
+                .load(artist.getUrl())
+                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
+                .into(holder.artistImage);
 
         return convertView;
     }

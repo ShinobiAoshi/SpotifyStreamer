@@ -23,8 +23,7 @@ public class ParcelableArtist implements Parcelable {
 
         if (artist.images.size() > 0) {
             this.url = Utility.getImageUrl(artist.images, 200);
-        } else
-            this.url = "https://d1qb2nb5cznatu.cloudfront.net/startups/i/113563-0d042ff7bd710ce95c303aa3f93c8522-medium_jpg.jpg?buster=1431803239";
+        }
     }
 
     public String getId() {

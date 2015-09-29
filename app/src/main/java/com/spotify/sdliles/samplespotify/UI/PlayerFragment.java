@@ -257,6 +257,8 @@ public class PlayerFragment extends DialogFragment implements SeekBar.OnSeekBarC
 
         Picasso.with(mParentActivity)
                 .load(currentTrack.getAlbumArtLargeUrl())
+                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
                 .into(albumImageImageView);
 
         mActionBar = actionBar();

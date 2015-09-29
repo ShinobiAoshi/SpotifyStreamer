@@ -52,7 +52,11 @@ public class TrackAdapter extends ArrayAdapter<ParcelableTrack> {
         ParcelableTrack track = trackData.get(position);
         holder.trackName.setText(track.getTrackName());
         holder.albumName.setText(track.getAlbumName());
-        Picasso.with(this.context).load(track.getAlbumArtSmallUrl()).into(holder.albumArt);
+        Picasso.with(this.context)
+                .load(track.getAlbumArtSmallUrl())
+                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
+                .into(holder.albumArt);
 
         return convertView;
     }
