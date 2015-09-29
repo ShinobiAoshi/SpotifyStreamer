@@ -1,9 +1,9 @@
-package com.spotify.sdliles.spotifystreamer.Models;
+package com.spotify.sdliles.samplespotify.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.spotify.sdliles.spotifystreamer.Util.Utility;
+import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import kaaes.spotify.webapi.android.models.Track;
 

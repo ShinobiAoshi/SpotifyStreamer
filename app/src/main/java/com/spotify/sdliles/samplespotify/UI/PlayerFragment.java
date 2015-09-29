@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.UI;
+package com.spotify.sdliles.samplespotify.UI;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -24,12 +24,12 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableTrack;
-import com.spotify.sdliles.spotifystreamer.R;
-import com.spotify.sdliles.spotifystreamer.Service.MediaPlayerService;
-import com.spotify.sdliles.spotifystreamer.Service.MediaPlayerService.MediaPlayerServiceBinder;
-import com.spotify.sdliles.spotifystreamer.Service.MediaPlayerService.ServiceState;
+import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
+import com.spotify.sdliles.samplespotify.Models.ParcelableTrack;
+import com.spotify.sdliles.samplespotify.R;
+import com.spotify.sdliles.samplespotify.Service.MediaPlayerService;
+import com.spotify.sdliles.samplespotify.Service.MediaPlayerService.MediaPlayerServiceBinder;
+import com.spotify.sdliles.samplespotify.Service.MediaPlayerService.ServiceState;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class PlayerFragment extends DialogFragment implements SeekBar.OnSeekBarC
     private ActionBar mActionBar;
     private Activity mParentActivity;
     private ParcelableArtist mArtist;
-    private Integer mPosition;
+    private int mPosition;
     private ArrayList<ParcelableTrack> mTracks;
     private MediaPlayerService mMediaPlayerService;
     private boolean mIsMediaPlayerServiceBound = false;
@@ -165,7 +165,7 @@ public class PlayerFragment extends DialogFragment implements SeekBar.OnSeekBarC
     private void setupSeekBar() {
         mSeekBar = seekBar();
         mSeekBar.setProgress(0);
-        mSeekBar.setMax(30);
+        mSeekBar.setMax(MAX_TRACk_LENGTH_IN_SECONDS);
         mSeekBar.setOnSeekBarChangeListener(this);
     }
 
@@ -238,7 +238,6 @@ public class PlayerFragment extends DialogFragment implements SeekBar.OnSeekBarC
 
     private void setupActionBar() {
         mActionBar = actionBar();
-        mActionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     private ActionBar actionBar() {

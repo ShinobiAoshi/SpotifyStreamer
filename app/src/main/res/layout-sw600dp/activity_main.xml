@@ -17,11 +17,11 @@
             android:layout_height="match_parent"
             android:baselineAligned="false"
             android:divider="?android:attr/dividerHorizontal"
-            tools:context="com.spotify.sdliles.spotifystreamer.UI.MainActivity">
+            tools:context="com.spotify.sdliles.samplespotify.UI.MainActivity">
 
         <fragment
                 android:id="@+id/fragment_artist_search"
-                android:name="com.spotify.sdliles.spotifystreamer.UI.ArtistSearchFragment"
+                android:name="com.spotify.sdliles.samplespotify.UI.ArtistSearchFragment"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

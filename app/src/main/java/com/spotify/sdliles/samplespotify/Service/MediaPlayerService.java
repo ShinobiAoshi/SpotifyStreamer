@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.Service;
+package com.spotify.sdliles.samplespotify.Service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -16,10 +16,10 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableTrack;
-import com.spotify.sdliles.spotifystreamer.R;
-import com.spotify.sdliles.spotifystreamer.UI.MainActivity;
+import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
+import com.spotify.sdliles.samplespotify.Models.ParcelableTrack;
+import com.spotify.sdliles.samplespotify.R;
+import com.spotify.sdliles.samplespotify.UI.MainActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;

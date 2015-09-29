@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.UI;
+package com.spotify.sdliles.samplespotify.UI;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.spotify.sdliles.spotifystreamer.Adapters.TrackAdapter;
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableTrack;
-import com.spotify.sdliles.spotifystreamer.R;
-import com.spotify.sdliles.spotifystreamer.Util.Spotify;
+import com.spotify.sdliles.samplespotify.Adapters.TrackAdapter;
+import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
+import com.spotify.sdliles.samplespotify.Models.ParcelableTrack;
+import com.spotify.sdliles.samplespotify.R;
+import com.spotify.sdliles.samplespotify.Util.Spotify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,13 +55,15 @@ public class TopTracksFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Bundle arguments = getArguments();
 
+        Bundle arguments = getArguments();
         if (arguments != null) {
             mArtist = arguments.getParcelable(ArtistSearchFragment.ARTIST_KEY);
         }
 
         rootView = inflater.inflate(R.layout.fragment_top_tracks, container, false);
+        toolbar.setTitle(mArtist.getName());
+        toolbar.setSubtitle(R.string.top_tracks);
 
         if(savedInstanceState != null) {
 
@@ -87,7 +89,7 @@ public class TopTracksFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParcelableTrack track = (ParcelableTrack) trackList.getItemAtPosition(position);
                 if (track != null) {
-                    ((OnTrackSelectedListener) getActivity()).onTrackSelected(mArtist, (ArrayList) mParcelableTracks, mPosition);
+                    ((OnTrackSelectedListener) getActivity()).onTrackSelected(mArtist, (ArrayList) mParcelableTracks, position);
                 }
                 mPosition = position;
             }
@@ -100,7 +102,6 @@ public class TopTracksFragment extends Fragment {
         if (mArtist != null && savedInstanceState == null) {
             new FetchTracksTask().execute();
         }
-
         return rootView;
     }
 

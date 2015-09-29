@@ -1,13 +1,13 @@
-package com.spotify.sdliles.spotifystreamer.UI;
+package com.spotify.sdliles.samplespotify.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableTrack;
-import com.spotify.sdliles.spotifystreamer.R;
+import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
+import com.spotify.sdliles.samplespotify.Models.ParcelableTrack;
+import com.spotify.sdliles.samplespotify.R;
 
 import java.util.ArrayList;
 import java.util.List;

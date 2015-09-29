@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.UI;
+package com.spotify.sdliles.samplespotify.UI;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
@@ -18,10 +18,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.spotify.sdliles.spotifystreamer.Adapters.ArtistAdapter;
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
-import com.spotify.sdliles.spotifystreamer.R;
-import com.spotify.sdliles.spotifystreamer.Util.Spotify;
+import com.spotify.sdliles.samplespotify.Adapters.ArtistAdapter;
+import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
+import com.spotify.sdliles.samplespotify.R;
+import com.spotify.sdliles.samplespotify.Util.Spotify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,21 +124,6 @@ public class ArtistSearchFragment extends Fragment {
             }
         });
         super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

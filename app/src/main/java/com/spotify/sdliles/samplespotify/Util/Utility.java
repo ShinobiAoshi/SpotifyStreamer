@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.Util;
+package com.spotify.sdliles.samplespotify.Util;
 
 import java.util.List;
 

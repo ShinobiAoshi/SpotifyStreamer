@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:minHeight="?android:attr/listPreferredItemHeight"
-              android:background="@drawable/touch_selector">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:background="@drawable/touch_selector">
 
     <ImageView
             android:id="@+id/artist_image"
@@ -13,7 +14,6 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:layout_marginLeft="10dp"
             android:padding="5dp"/>
 
     <TextView

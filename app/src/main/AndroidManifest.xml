@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.spotify.sdliles.spotifystreamer">
+          package="com.spotify.sdliles.samplespotify">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -12,7 +12,7 @@
             android:theme="@style/AppTheme">
 
         <service
-                android:name=".Service.MediaPlayerService"
+                android:name="com.spotify.sdliles.samplespotify.Service.MediaPlayerService"
                 android:exported="false"
                 android:stopWithTask="true">
             <intent-filter>
@@ -23,7 +23,7 @@
         </service>
 
         <activity
-                android:name=".UI.MainActivity"
+                android:name="com.spotify.sdliles.samplespotify.UI.MainActivity"
                 android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -31,16 +31,16 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".UI.TopTracksActivity"
+                android:name="com.spotify.sdliles.samplespotify.UI.TopTracksActivity"
                 android:label="Top Tracks"
-                android:parentActivityName=".UI.MainActivity"/>
+                android:parentActivityName="com.spotify.sdliles.samplespotify.UI.MainActivity"/>
         <activity
-                android:name=".UI.PlayerActivity"
+                android:name="com.spotify.sdliles.samplespotify.UI.PlayerActivity"
                 android:label="Player"
-                android:parentActivityName=".UI.TopTracksActivity">
+                android:parentActivityName="com.spotify.sdliles.samplespotify.UI.TopTracksActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.spotify.sdliles.spotifystreamer.UI.TopTracksActivity"/>
+                    android:value="com.spotify.sdliles.samplespotify.UI.TopTracksActivity"/>
         </activity>
     </application>
 
