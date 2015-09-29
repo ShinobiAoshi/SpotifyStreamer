@@ -12,10 +12,10 @@
     <fragment
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/fragment_artist_search"
-            android:name="com.spotify.sdliles.spotifystreamer.UI.ArtistSearchFragment"
+            android:name="com.spotify.sdliles.samplespotify.UI.ArtistSearchFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout="@layout/fragment_artist_search"
-            tools:context="com.spotify.sdliles.spotifystreamer.UI.ArtistSearchFragment"/>
+            tools:context="com.spotify.sdliles.samplespotify.UI.ArtistSearchFragment"
+            tools:ignore="MergeRootFrame"/>
 
 </LinearLayout>

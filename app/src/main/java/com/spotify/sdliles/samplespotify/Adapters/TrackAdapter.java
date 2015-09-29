@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.Adapters;
+package com.spotify.sdliles.samplespotify.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableTrack;
-import com.spotify.sdliles.spotifystreamer.R;
+import com.spotify.sdliles.samplespotify.Models.ParcelableTrack;
+import com.spotify.sdliles.samplespotify.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -52,7 +52,11 @@ public class TrackAdapter extends ArrayAdapter<ParcelableTrack> {
         ParcelableTrack track = trackData.get(position);
         holder.trackName.setText(track.getTrackName());
         holder.albumName.setText(track.getAlbumName());
-        Picasso.with(this.context).load(track.getAlbumArtSmallUrl()).into(holder.albumArt);
+        Picasso.with(this.context)
+                .load(track.getAlbumArtSmallUrl())
+                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
+                .into(holder.albumArt);
 
         return convertView;
     }

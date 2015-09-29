@@ -1,9 +1,9 @@
-package com.spotify.sdliles.spotifystreamer.Models;
+package com.spotify.sdliles.samplespotify.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.spotify.sdliles.spotifystreamer.Util.Utility;
+import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import kaaes.spotify.webapi.android.models.Artist;
 
@@ -23,8 +23,7 @@ public class ParcelableArtist implements Parcelable {
 
         if (artist.images.size() > 0) {
             this.url = Utility.getImageUrl(artist.images, 200);
-        } else
-            this.url = "https://d1qb2nb5cznatu.cloudfront.net/startups/i/113563-0d042ff7bd710ce95c303aa3f93c8522-medium_jpg.jpg?buster=1431803239";
+        }
     }
 
     public String getId() {

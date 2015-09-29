@@ -1,4 +1,4 @@
-package com.spotify.sdliles.spotifystreamer.Adapters;
+package com.spotify.sdliles.samplespotify.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.spotify.sdliles.spotifystreamer.Models.ParcelableArtist;
-import com.spotify.sdliles.spotifystreamer.R;
+import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
+import com.spotify.sdliles.samplespotify.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -50,7 +50,11 @@ public class ArtistAdapter extends ArrayAdapter<ParcelableArtist> {
 
         ParcelableArtist artist = artistData.get(position);
         holder.artistName.setText(artist.getName());
-        Picasso.with(this.context).load(artist.getUrl()).into(holder.artistImage);
+        Picasso.with(this.context)
+                .load(artist.getUrl())
+                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
+                .into(holder.artistImage);
 
         return convertView;
     }
