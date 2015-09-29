@@ -16,9 +16,9 @@
                 android:exported="false"
                 android:stopWithTask="true">
             <intent-filter>
-                <action android:name="com.spotify.sdliles.spotifystreamer.action.PREVIOUS"/>
-                <action android:name="com.spotify.sdliles.spotifystreamer.action.TOGGLE_PLAYBACK"/>
-                <action android:name="com.spotify.sdliles.spotifystreamer.action.FOWARD"/>
+                <action android:name="com.spotify.sdliles.samplespotify.action.PREVIOUS"/>
+                <action android:name="com.spotify.sdliles.samplespotify.action.TOGGLE_PLAYBACK"/>
+                <action android:name="com.spotify.sdliles.samplespotify.action.FOWARD"/>
             </intent-filter>
         </service>
 

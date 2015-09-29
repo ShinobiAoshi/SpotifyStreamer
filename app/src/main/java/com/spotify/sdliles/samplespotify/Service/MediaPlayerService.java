@@ -40,9 +40,9 @@ public class MediaPlayerService extends Service implements
     public static final String BROADCAST_DATA_CURRENT_PROGRESS = "current-progress";
 
 
-    public static final String ACTION_TOGGLE_PLAYBACK = "com.spotify.sdliles.spotifystreamer.action.TOGGLE_PLAYBACK";
-    public static final String ACTION_FOWARD = "com.spotify.sdliles.spotifystreamer.action.FOWARD";
-    public static final String ACTION_PREVIOUS = "com.spotify.sdliles.spotifystreamer.action.PREVIOUS";
+    public static final String ACTION_TOGGLE_PLAYBACK = "com.spotify.sdliles.samplespotify.action.TOGGLE_PLAYBACK";
+    public static final String ACTION_FOWARD = "com.spotify.sdliles.samplespotify.action.FOWARD";
+    public static final String ACTION_PREVIOUS = "com.spotify.sdliles.samplespotify.action.PREVIOUS";
 
 
     private static final String LOG_TAG = MediaPlayerService.class.getSimpleName();

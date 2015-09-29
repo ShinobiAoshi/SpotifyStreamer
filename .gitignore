@@ -10,3 +10,9 @@
 /.idea/dataSources.ids
 Thumbs.db
 *.class
+.idea/vcs.xml
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/runConfigurations.xml
+.idea/misc.xml
