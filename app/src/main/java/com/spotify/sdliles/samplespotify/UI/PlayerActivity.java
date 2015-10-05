@@ -16,14 +16,14 @@ public class PlayerActivity extends AppCompatActivity {
     ParcelableArtist mArtist;
     int mPosition;
     ArrayList<ParcelableTrack> mTracks;
-    Toolbar toolbar;
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
 

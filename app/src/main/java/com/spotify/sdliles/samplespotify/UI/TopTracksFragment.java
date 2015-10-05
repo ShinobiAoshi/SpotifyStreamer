@@ -1,5 +1,6 @@
 package com.spotify.sdliles.samplespotify.UI;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,21 +26,19 @@ import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.Tracks;
 
-/**
- * Created by Stephen on 8/10/2015.
- */
 public class TopTracksFragment extends Fragment {
 
 
 
-    private View rootView;
+    private View mRootView;
     private ParcelableArtist mArtist;
     private TrackAdapter mTrackAdapter;
     private List<ParcelableTrack> mParcelableTracks;
     private SpotifyService mSpotify;
-    private ListView trackList;
-    private ProgressDialog progressDialog;
-    private ActionBar toolbar;
+    private ListView mTrackList;
+    private ProgressDialog mProgressDialog;
+    private ActionBar mToolbar;
+    private Activity mParentActivity;
 
     private int mPosition = ListView.INVALID_POSITION;
     public static final String SELECTED_TRACK_INDEX = "track_index";
@@ -54,7 +53,7 @@ public class TopTracksFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_top_tracks, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_top_tracks, container, false);
         mParcelableTracks = new ArrayList<>();
 
         if (savedInstanceState == null) {
@@ -63,41 +62,46 @@ public class TopTracksFragment extends Fragment {
             loadSavedInstanceState(savedInstanceState);
         }
 
-        trackList = (ListView) rootView.findViewById(R.id.top_tracks_list_view);
-        mTrackAdapter = new TrackAdapter(getActivity(), R.layout.list_top_tracks_item, mParcelableTracks);
-        trackList.setAdapter(mTrackAdapter);
+        bindValues();
 
-        trackList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        if (mArtist != null && savedInstanceState == null) {
+            new FetchTracksTask().execute();
+        }
+
+        return mRootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mToolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+    }
+
+    private void loadArguments() {
+        Bundle arguments = getArguments();
+        mArtist = arguments.getParcelable(ArtistSearchFragment.ARTIST_KEY);
+    }
+
+    private void bindValues() {
+        mParentActivity = getActivity();
+        mTrackList = (ListView) mRootView.findViewById(R.id.top_tracks_list_view);
+        mTrackAdapter = new TrackAdapter(mParentActivity, R.layout.list_top_tracks_item, mParcelableTracks);
+        mTrackList.setAdapter(mTrackAdapter);
+
+        mTrackList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ParcelableTrack track = (ParcelableTrack) trackList.getItemAtPosition(position);
+                ParcelableTrack track = (ParcelableTrack) mTrackList.getItemAtPosition(position);
                 if (track != null) {
-                    ((OnTrackSelectedListener) getActivity()).onTrackSelected(mArtist, (ArrayList) mParcelableTracks, position);
+                    ((OnTrackSelectedListener) mParentActivity).onTrackSelected(mArtist, (ArrayList) mParcelableTracks, position);
                 }
                 mPosition = position;
             }
         });
 
         if (mPosition != ListView.INVALID_POSITION) {
-            trackList.setSelection(mPosition);
+            mTrackList.setSelection(mPosition);
         }
-
-        // TODO: Execute after onArtistSelectedListener??
-        if (mArtist != null && savedInstanceState == null) {
-            new FetchTracksTask().execute();
-        }
-        return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        toolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-    }
-
-    private void loadArguments() {
-        Bundle arguments = getArguments();
-        mArtist = arguments.getParcelable(ArtistSearchFragment.ARTIST_KEY);
     }
 
     private void loadSavedInstanceState(Bundle savedInstanceState) {
@@ -129,9 +133,9 @@ public class TopTracksFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setCancelable(false);
-            progressDialog.show();
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setCancelable(false);
+            mProgressDialog.show();
         }
 
         @Override
@@ -147,10 +151,10 @@ public class TopTracksFragment extends Fragment {
                 mTrackAdapter.clear();
                 mTrackAdapter.addAll(mParcelableTracks);
 
-                toolbar.setTitle(mArtist.getName());
-                toolbar.setSubtitle(R.string.top_tracks);
+                mToolbar.setTitle(mArtist.getName());
+                mToolbar.setSubtitle(R.string.top_tracks);
 
-                progressDialog.dismiss();
+                mProgressDialog.dismiss();
             }
         }
     }

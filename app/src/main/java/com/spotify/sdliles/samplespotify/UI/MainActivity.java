@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
     private static final String TOPTRACKFRAGMENT_TAG = "TTTAG";
     public static final String PLAYER_KEY = "player-dialog";
 
-    private Toolbar toolbar;
+    private Toolbar mToolbar;
     private boolean mIsTwoPaneLayout;
     DialogFragment mPlayerDialog;
 
@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mToolbar);
 
         mIsTwoPaneLayout = (findViewById(R.id.top_tracks_container) != null);
         if (mIsTwoPaneLayout && savedInstanceState == null) {

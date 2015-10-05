@@ -14,8 +14,7 @@ public class Utility {
 
         Image image;
         int imageSize;
-
-        // Image sizes come bigger first, small last
+        
         for(int i = imagesList.size() - 1; i >= 0; i--) {
             image = imagesList.get(i);
             imageSize = Math.max(image.height, image.width);
