@@ -15,9 +15,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by Stephen on 7/27/2015.
- */
 public class ArtistAdapter extends ArrayAdapter<ParcelableArtist> {
 
     Context context;
