@@ -7,12 +7,17 @@ import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import kaaes.spotify.webapi.android.models.Artist;
 
-/**
- * Created by Stephen on 8/4/2015.
- */
-
 public class ParcelableArtist implements Parcelable {
 
+    public static final Parcelable.Creator<ParcelableArtist> CREATOR = new Parcelable.Creator<ParcelableArtist>() {
+        public ParcelableArtist createFromParcel(Parcel in) {
+            return new ParcelableArtist(in);
+        }
+
+        public ParcelableArtist[] newArray(int size) {
+            return new ParcelableArtist[size];
+        }
+    };
     private String id;
     private String name;
     private String url;
@@ -24,6 +29,12 @@ public class ParcelableArtist implements Parcelable {
         if (artist.images.size() > 0) {
             this.url = Utility.getImageUrl(artist.images, 200);
         }
+    }
+
+    private ParcelableArtist(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.url = in.readString();
     }
 
     public String getId() {
@@ -54,20 +65,4 @@ public class ParcelableArtist implements Parcelable {
         dest.writeString(this.name);
         dest.writeString(this.url);
     }
-
-    private ParcelableArtist(Parcel in) {
-        this.id = in.readString();
-        this.name = in.readString();
-        this.url = in.readString();
-    }
-
-    public static final Parcelable.Creator<ParcelableArtist> CREATOR = new Parcelable.Creator<ParcelableArtist>() {
-        public ParcelableArtist createFromParcel(Parcel in) {
-            return new ParcelableArtist(in);
-        }
-
-        public ParcelableArtist[] newArray(int size) {
-            return new ParcelableArtist[size];
-        }
-    };
 }

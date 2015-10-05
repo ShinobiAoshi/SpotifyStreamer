@@ -15,23 +15,23 @@ import java.util.List;
 /**
  * Created by Stephen on 9/17/2015.
  */
-public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.OnTrackSelectedListener{
+public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.OnTrackSelectedListener {
 
-    ParcelableArtist artist;
-    Toolbar toolbar;
+    ParcelableArtist mArtist;
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_tracks);
-        toolbar = (Toolbar) findViewById(R.id.app_bar);
-        setSupportActionBar(toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(mToolbar);
 
         if (savedInstanceState == null) {
 
             Bundle arguments = new Bundle();
-            artist = getIntent().getParcelableExtra(ArtistSearchFragment.ARTIST_KEY);
-            arguments.putParcelable(ArtistSearchFragment.ARTIST_KEY, artist);
+            mArtist = getIntent().getParcelableExtra(ArtistSearchFragment.ARTIST_KEY);
+            arguments.putParcelable(ArtistSearchFragment.ARTIST_KEY, mArtist);
 
             TopTracksFragment fragment = new TopTracksFragment();
             fragment.setArguments(arguments);

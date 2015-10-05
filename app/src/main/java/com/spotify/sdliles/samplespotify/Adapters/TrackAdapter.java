@@ -15,9 +15,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by Stephen on 9/14/2015.
- */
 public class TrackAdapter extends ArrayAdapter<ParcelableTrack> {
 
     Context context;

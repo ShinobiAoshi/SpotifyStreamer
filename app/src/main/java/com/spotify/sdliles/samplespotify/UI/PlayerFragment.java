@@ -34,10 +34,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-
-/**
- * A placeholder fragment containing a simple view.
- */
 public class PlayerFragment extends DialogFragment implements SeekBar.OnSeekBarChangeListener {
     public static final String LOG_TAG = PlayerFragment.class.getSimpleName();
 

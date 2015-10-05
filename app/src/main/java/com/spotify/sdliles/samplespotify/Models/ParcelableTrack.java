@@ -7,11 +7,17 @@ import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import kaaes.spotify.webapi.android.models.Track;
 
-/**
- * Created by Stephen on 9/14/2015.
- */
 public class ParcelableTrack implements Parcelable {
 
+    public static final Parcelable.Creator<ParcelableTrack> CREATOR = new Parcelable.Creator<ParcelableTrack>() {
+        public ParcelableTrack createFromParcel(Parcel in) {
+            return new ParcelableTrack(in);
+        }
+
+        public ParcelableTrack[] newArray(int size) {
+            return new ParcelableTrack[size];
+        }
+    };
     private String trackName;
     private String albumName;
     private String albumArtLargeUrl;
@@ -29,17 +35,33 @@ public class ParcelableTrack implements Parcelable {
         }
     }
 
-    public String getTrackName() { return trackName; }
+    private ParcelableTrack(Parcel in) {
+        trackName = in.readString();
+        albumName = in.readString();
+        albumArtSmallUrl = in.readString();
+        albumArtLargeUrl = in.readString();
+        previewUrl = in.readString();
+    }
 
-    public String getAlbumName() { return albumName; }
+    public String getTrackName() {
+        return trackName;
+    }
+
+    public String getAlbumName() {
+        return albumName;
+    }
 
     public String getAlbumArtLargeUrl() {
         return albumArtLargeUrl;
     }
 
-    public String getAlbumArtSmallUrl() { return albumArtSmallUrl; }
+    public String getAlbumArtSmallUrl() {
+        return albumArtSmallUrl;
+    }
 
-    public String getPreviewUrl() { return previewUrl; }
+    public String getPreviewUrl() {
+        return previewUrl;
+    }
 
     @Override
     public String toString() {
@@ -60,22 +82,4 @@ public class ParcelableTrack implements Parcelable {
         dest.writeString(albumArtLargeUrl);
         dest.writeString(previewUrl);
     }
-
-    private ParcelableTrack(Parcel in) {
-        trackName = in.readString();
-        albumName = in.readString();
-        albumArtSmallUrl = in.readString();
-        albumArtLargeUrl = in.readString();
-        previewUrl = in.readString();
-    }
-
-    public static final Parcelable.Creator<ParcelableTrack> CREATOR = new Parcelable.Creator<ParcelableTrack>() {
-        public ParcelableTrack createFromParcel(Parcel in) {
-            return new ParcelableTrack(in);
-        }
-
-        public ParcelableTrack[] newArray(int size) {
-            return new ParcelableTrack[size];
-        }
-    };
 }
