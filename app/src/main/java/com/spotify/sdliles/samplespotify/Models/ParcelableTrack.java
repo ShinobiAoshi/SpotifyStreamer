@@ -7,9 +7,6 @@ import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import kaaes.spotify.webapi.android.models.Track;
 
-/**
- * Created by Stephen on 9/14/2015.
- */
 public class ParcelableTrack implements Parcelable {
 
     private String trackName;

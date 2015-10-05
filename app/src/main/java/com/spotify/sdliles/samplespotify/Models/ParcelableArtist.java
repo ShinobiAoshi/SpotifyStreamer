@@ -7,10 +7,6 @@ import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import kaaes.spotify.webapi.android.models.Artist;
 
-/**
- * Created by Stephen on 8/4/2015.
- */
-
 public class ParcelableArtist implements Parcelable {
 
     private String id;
