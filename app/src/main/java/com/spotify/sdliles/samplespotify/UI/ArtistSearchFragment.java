@@ -23,6 +23,7 @@ import com.spotify.sdliles.samplespotify.Adapters.ArtistAdapter;
 import com.spotify.sdliles.samplespotify.Models.ParcelableArtist;
 import com.spotify.sdliles.samplespotify.R;
 import com.spotify.sdliles.samplespotify.Util.Spotify;
+import com.spotify.sdliles.samplespotify.Util.Utility;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +81,6 @@ public class ArtistSearchFragment extends Fragment {
     private void bindValues() {
         mArtistList = (ListView) mRootView.findViewById(R.id.artist_search_list_view);
         mArtistAdapter = new ArtistAdapter(mParentActivity, R.layout.list_artist_search_result, mParcelableArtists);
-        ViewGroup parentGroup = (ViewGroup) mArtistList.getParent();
-        View emptyView = mParentActivity.getLayoutInflater().inflate(R.layout.empty_list, parentGroup, false);
-        parentGroup.addView(emptyView);
-        mArtistList.setEmptyView(emptyView);
         mArtistList.setAdapter(mArtistAdapter);
 
         mArtistList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -112,9 +109,14 @@ public class ArtistSearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new FetchArtistsTask().execute(query);
-                searchView.setQuery("", false);
-                searchView.setIconified(true);
+                if(Utility.hasInternet(mParentActivity.getApplicationContext())) {
+                    new FetchArtistsTask().execute(query);
+                } else {
+                    Utility.noInternetToast(mParentActivity.getApplicationContext());
+                    searchView.setQuery("", false);
+                    searchView.setIconified(true);
+                }
+
                 return true;
             }
 
@@ -162,15 +164,20 @@ public class ArtistSearchFragment extends Fragment {
             if (artistsPager != null) {
 
                 mParcelableArtists = new ArrayList<>();
-                for (Artist artist : artistsPager.artists.items) {
-                    ParcelableArtist parcelableArtist = new ParcelableArtist(artist);
-                    mParcelableArtists.add(parcelableArtist);
-                }
+                if(artistsPager.artists.items.isEmpty()) {
+                    Utility.noResultsToast(mParentActivity.getApplicationContext());
+                } else {
+                    for (Artist artist : artistsPager.artists.items) {
+                        ParcelableArtist parcelableArtist = new ParcelableArtist(artist);
+                        mParcelableArtists.add(parcelableArtist);
+                    }
 
-                mArtistAdapter.clear();
-                mArtistAdapter.addAll(mParcelableArtists);
+                    mArtistAdapter.clear();
+                    mArtistAdapter.addAll(mParcelableArtists);
 
-                if(mProgressDialog != null) {
+                    }
+
+                if (mProgressDialog != null) {
                     mProgressDialog.dismiss();
                 }
             }
