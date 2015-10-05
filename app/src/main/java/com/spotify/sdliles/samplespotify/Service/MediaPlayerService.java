@@ -163,11 +163,6 @@ public class MediaPlayerService extends Service implements
         startPlay();
     }
 
-    /**
-     * Seek to specific position of the track.
-     *
-     * @param position milliseconds
-     */
     public void seekTo(int position) {
         if (ServiceState.PLAYING.equals(mState) || ServiceState.PAUSED.equals(mState)) {
             mMediaPlayer.seekTo(position);
