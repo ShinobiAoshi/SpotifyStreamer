@@ -11,15 +11,15 @@ public class Spotify {
 
     private static SpotifyService service;
 
+    private Spotify() {
+
+    }
+
     public static SpotifyService getInstance() {
         if (service != null) return service;
 
         SpotifyApi api = new SpotifyApi();
         service = api.getService();
         return service;
-    }
-
-    private Spotify() {
-
     }
 }

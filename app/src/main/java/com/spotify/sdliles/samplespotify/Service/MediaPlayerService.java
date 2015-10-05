@@ -50,6 +50,7 @@ public class MediaPlayerService extends Service implements
     private static final float DUCK_VOLUME = 0.1f;
     private static final int NOTIFICATION_ID = 1;
     private final IBinder selfBinder = new MediaPlayerServiceBinder();
+    boolean mHasError = false;
     private MediaPlayer mMediaPlayer;
     private ArrayList<ParcelableTrack> mTracks;
     private int mPosition = 0;
@@ -61,8 +62,6 @@ public class MediaPlayerService extends Service implements
     private ScheduledFuture<?> mTrackProgressReporter;
     private NotificationManager mNotificationManager;
     private ParcelableArtist mArtist;
-
-    boolean mHasError = false;
 
     @Override
     public void onCreate() {

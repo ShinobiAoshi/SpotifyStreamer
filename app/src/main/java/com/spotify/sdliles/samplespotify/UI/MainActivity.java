@@ -17,12 +17,11 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ArtistSearchFragment.OnArtistSelectedListener, TopTracksFragment.OnTrackSelectedListener {
 
-    private static final String TOPTRACKFRAGMENT_TAG = "TTTAG";
     public static final String PLAYER_KEY = "player-dialog";
-
+    private static final String TOPTRACKFRAGMENT_TAG = "TTTAG";
+    DialogFragment mPlayerDialog;
     private Toolbar mToolbar;
     private boolean mIsTwoPaneLayout;
-    DialogFragment mPlayerDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements ArtistSearchFragm
 
     @Override
     public void onArtistSelected(ParcelableArtist artist) {
-        if(mIsTwoPaneLayout) {
+        if (mIsTwoPaneLayout) {
             Bundle args = new Bundle();
             args.putParcelable(ArtistSearchFragment.ARTIST_KEY, artist);
 

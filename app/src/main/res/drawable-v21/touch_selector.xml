@@ -3,11 +3,11 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true">
-        <ripple android:color="@color/darkGrey" />
+        <ripple android:color="@color/darkGrey"/>
     </item>
 
     <item android:state_activated="true"
-          android:drawable="@color/accentColor" />
+          android:drawable="@color/accentColor"/>
 
-    <item android:drawable="@android:color/transparent" />
+    <item android:drawable="@android:color/transparent"/>
 </selector>

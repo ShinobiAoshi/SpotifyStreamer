@@ -1,7 +1,6 @@
 package com.spotify.sdliles.samplespotify.UI;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -34,24 +33,18 @@ import kaaes.spotify.webapi.android.models.ArtistsPager;
 
 public class ArtistSearchFragment extends Fragment {
 
+    public static final String ARTIST_KEY = "artist";
+    public static final String ARTIST_LIST_KEY = "artists";
+    private static final String SELECTED_ARTIST_INDEX = "selected_artist";
     private View mRootView;
     private ActionBar mToolbar;
     private ArtistAdapter mArtistAdapter;
-    private ProgressDialog mProgressDialog;
     private List<ParcelableArtist> mParcelableArtists;
     private SpotifyService mSpotify;
     private ListView mArtistList;
     private Activity mParentActivity;
-
     private int mPosition = ListView.INVALID_POSITION;
-    private static final String SELECTED_ARTIST_INDEX = "selected_artist";
-    public static final String ARTIST_KEY = "artist";
-    public static final String ARTIST_LIST_KEY = "artists";
 
-
-    public interface OnArtistSelectedListener {
-        void onArtistSelected(ParcelableArtist artist);
-    }
 
     public ArtistSearchFragment() {
     }
@@ -63,7 +56,7 @@ public class ArtistSearchFragment extends Fragment {
         mParentActivity = getActivity();
         mParcelableArtists = new ArrayList<>();
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             loadSavedInstanceState(savedInstanceState);
         }
 
@@ -109,13 +102,14 @@ public class ArtistSearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(Utility.hasInternet(mParentActivity.getApplicationContext())) {
+                if (Utility.hasInternet(mParentActivity.getApplicationContext())) {
                     new FetchArtistsTask().execute(query);
                 } else {
                     Utility.noInternetToast(mParentActivity.getApplicationContext());
-                    searchView.setQuery("", false);
-                    searchView.setIconified(true);
                 }
+
+                searchView.setQuery("", false);
+                searchView.setIconified(true);
 
                 return true;
             }
@@ -131,18 +125,22 @@ public class ArtistSearchFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mToolbar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        mToolbar = ((AppCompatActivity) mParentActivity).getSupportActionBar();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if(mPosition != ListView.INVALID_POSITION) {
+        if (mPosition != ListView.INVALID_POSITION) {
             outState.putInt(SELECTED_ARTIST_INDEX, mPosition);
         }
-        if(mParcelableArtists != null && !mParcelableArtists.isEmpty()) {
+        if (mParcelableArtists != null && !mParcelableArtists.isEmpty()) {
             outState.putParcelableArrayList(ARTIST_LIST_KEY, (ArrayList<? extends Parcelable>) mParcelableArtists);
         }
         super.onSaveInstanceState(outState);
+    }
+
+    public interface OnArtistSelectedListener {
+        void onArtistSelected(ParcelableArtist artist);
     }
 
     public class FetchArtistsTask extends AsyncTask<String, Void, ArtistsPager> {
@@ -154,9 +152,7 @@ public class ArtistSearchFragment extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            mProgressDialog = new ProgressDialog(getActivity());
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.show();
+
         }
 
         @Override
@@ -164,7 +160,7 @@ public class ArtistSearchFragment extends Fragment {
             if (artistsPager != null) {
 
                 mParcelableArtists = new ArrayList<>();
-                if(artistsPager.artists.items.isEmpty()) {
+                if (artistsPager.artists.items.isEmpty()) {
                     Utility.noResultsToast(mParentActivity.getApplicationContext());
                 } else {
                     for (Artist artist : artistsPager.artists.items) {
@@ -174,11 +170,6 @@ public class ArtistSearchFragment extends Fragment {
 
                     mArtistAdapter.clear();
                     mArtistAdapter.addAll(mParcelableArtists);
-
-                    }
-
-                if (mProgressDialog != null) {
-                    mProgressDialog.dismiss();
                 }
             }
         }

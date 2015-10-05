@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by Stephen on 9/17/2015.
  */
-public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.OnTrackSelectedListener{
+public class TopTracksActivity extends AppCompatActivity implements TopTracksFragment.OnTrackSelectedListener {
 
     ParcelableArtist mArtist;
     Toolbar mToolbar;
